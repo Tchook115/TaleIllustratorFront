@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 from PIL import Image
 
+
 url = 'http://127.0.0.1:8000/'
 
 st.set_page_config(
@@ -18,26 +19,25 @@ st.set_page_config(
 # Once Upon A Time AI
 
 '''
-st.markdown('<style>body{background-color: Blue;}</style>',
-            unsafe_allow_html=True)
-
 
 def calque_merger(current_scene, new_scene):
-
+    final = Image.new("RGBA", current_scene.size)
     final.paste(current_scene, (0, 0), current_scene)
     final.paste(new_scene, (0, 0), new_scene)
     return final
 
-
+i = 0
 size_image = (2560, 1600)
 
 
+final = Image.new("RGBA", (2560, 1600))
+
 
 content = st.text_input('Ask for a drawing', '')
+
 message = {'message': content}
-st.text(message['message'])
-final = Image.new("RGBA", (2560, 1600))
-st.image(final)
+
+
 
 response = requests.get(url, params=message)
 
