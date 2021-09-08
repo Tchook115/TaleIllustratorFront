@@ -21,17 +21,28 @@ st.set_page_config(
 '''
 
 def calque_merger(current_scene, new_scene):
-    final = Image.new("RGBA", current_scene.size)
-    final.paste(current_scene, (0, 0), current_scene)
-    final.paste(new_scene, (0, 0), new_scene)
-    return final
+    final1 = Image.new("RGBA", current_scene.size)
+    final1.paste(current_scene, (0, 0), current_scene)
+    final1.paste(new_scene, (0, 0), new_scene)
+    return final1
 
-i = 0
+
 size_image = (2560, 1600)
 
+f = open("init.txt", "r")
+param=f.read()
+f.close()
 
-final = Image.new("RGBA", (2560, 1600))
+st.text(param)
 
+if param:
+    final = Image.new("RGBA", (2560, 1600))
+else:
+    final = Image.open('calque.jpg')
+
+f = open("init.txt", "w")
+f.write("param = False")
+f.close()
 
 content = st.text_input('Ask for a drawing', '')
 
@@ -39,9 +50,10 @@ message = {'message': content}
 
 
 
-response = requests.get(url, params=message)
+
 
 if content != '':
+    response = requests.get(url, params=message)
     size_image = eval(response.headers['size_image'])
     coordinates = eval(response.headers['coordinates'])
     image_data = response.content
@@ -49,3 +61,5 @@ if content != '':
     # st.image(image)
     final = calque_merger(final, calque)
     st.image(final)
+    final.save("calque.png")
+# st.experimental_set_query_params(final=final)
