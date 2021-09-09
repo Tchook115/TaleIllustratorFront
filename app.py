@@ -62,3 +62,4 @@ with col2:
     st.image(get_image(user_input), use_column_width=True)
     st.container()
     st.text(txt)
+
