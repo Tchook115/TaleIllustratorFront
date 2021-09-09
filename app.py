@@ -33,12 +33,11 @@ f = open("init.txt", "r")
 param=f.read()
 f.close()
 
-st.text(param)
 
 if param:
     final = Image.new("RGBA", (2560, 1600))
 else:
-    final = Image.open('calque.jpg')
+    final = Image.open('calque.png')
 
 f = open("init.txt", "w")
 f.write("param = False")
@@ -48,18 +47,20 @@ content = st.text_input('Ask for a drawing', '')
 
 message = {'message': content}
 
-
-
-
+response = requests.get(url, params=message)
+st.text(response.headers)
 
 if content != '':
-    response = requests.get(url, params=message)
-    size_image = eval(response.headers['size_image'])
-    coordinates = eval(response.headers['coordinates'])
-    image_data = response.content
-    calque = Image.frombytes('RGBA', size_image, image_data)
-    # st.image(image)
-    final = calque_merger(final, calque)
-    st.image(final)
-    final.save("calque.png")
+    if response.headers['content-type'] == 'application/json':
+        txt = eval(response.content.decode("utf-8")).get('text')
+        st.text(txt)
+    else:
+        size_image = eval(response.headers['size_image'])
+        coordinates = eval(response.headers['coordinates'])
+        image_data = response.content
+        calque = Image.frombytes('RGBA', size_image, image_data)
+        # st.image(image)
+        final = calque_merger(final, calque)
+        st.image(final)
+        final.save("calque.png")
 # st.experimental_set_query_params(final=final)
