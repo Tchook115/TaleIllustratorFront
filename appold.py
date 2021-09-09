@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 from PIL import Image
 
-url = 'http://127.0.0.1:8000/'
+url = 'https://ouatai12-qlhq5xa3oq-ew.a.run.app'
 backgnd_list = ['Windows XP', 'Underwater']
 
 backgd = Image.open('./backgrounds/bg_prairie.png')
