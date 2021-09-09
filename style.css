@@ -1,0 +1,10 @@
+div[data-testid="stBlock"]:nth-child(2) > div:first-of-type {
+    display: flex;
+    flex-direction: column-reverse;
+    /* background-color: orange; */
+
+  }
+
+  body {
+    background-color: peachpuff;
+  }
