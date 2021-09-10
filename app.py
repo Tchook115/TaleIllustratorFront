@@ -17,7 +17,7 @@ local_css('style.css')
 st.markdown("<h1 style='text-align: center; margin-top: -70px; margin-bottom: 70px;'>Once Upon A Time AI</h1>", unsafe_allow_html=True)
 
 #variables
-url = 'http://127.0.0.1:8000/'
+url = 'https://ouatai30-qlhq5xa3oq-ew.a.run.app'
 size_image = (2560, 1600)
 user_input = None
 txt = ''
@@ -34,14 +34,17 @@ def get_image(message):
     if message != '':
         params = {'message': message}
         response = requests.get(url, params=params)
-        # if response.headers['content-type'] == 'application/json':
-        #     txt = eval(response.content.decode("utf-8")).get('text')
-        if response.status_code == 200:
-            image_data = response.content
-            calque = Image.frombytes('RGBA', size_image, image_data)
-            image = Image.open('current_draw/frame.png')
-            image.paste(calque, (0,0), calque)
-            image.save('current_draw/frame.png')
+        if response.headers['content-type'] == 'application/json':
+            global txt
+            txt = eval(response.content.decode("utf-8")).get('text')
+            return Image.open('current_draw/frame.png')
+        else:
+            if response.status_code == 200:
+                image_data = response.content
+                calque = Image.frombytes('RGBA', size_image, image_data)
+                image = Image.open('current_draw/frame.png')
+                image.paste(calque, (0,0), calque)
+                image.save('current_draw/frame.png')
     return Image.open('current_draw/frame.png')
 # mise dans le cache de la recherche
 def get_text():
